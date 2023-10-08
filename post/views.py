@@ -1,12 +1,15 @@
 from django.http import response
+from django.contrib.auth import get_user_model
 from django.shortcuts import render
 from rest_framework.views import APIView
 from rest_framework import generics, permissions, viewsets
 from rest_framework.permissions import IsAuthenticatedOrReadOnly, IsAdminUser 
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
-from .serializers import DestinationSerializer, PackageSerializer, BookingSerializer
+from .serializers import DestinationSerializer, PackageSerializer, BookingSerializer, UserSerializer
 from .models import Destination, Package, Booking
+from rest_framework.authentication import SessionAuthentication, BasicAuthentication
+from rest_framework.permissions import IsAuthenticated
 
 
 class getRoute(APIView):
@@ -23,6 +26,7 @@ class getRoute(APIView):
             'turs/detail/<slug>/',
             'turs/create/',
             'turs/create/<id>',
+            'api/token/',
         ]
         return Response(routes)
     
@@ -74,3 +78,9 @@ class DestinationViewSet(viewsets.ModelViewSet):
 class BookingViewSet(viewsets.ModelViewSet):
     queryset = Booking.objects.all()
     serializer_class = BookingSerializer
+
+class UserViewSet(viewsets.ModelViewSet):
+
+    permission_classes = (IsAuthenticated,)
+    serializer_class = UserSerializer
+    queryset = get_user_model().objects.all()
