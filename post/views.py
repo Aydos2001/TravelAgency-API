@@ -43,7 +43,7 @@ class PackageView(APIView):
         return Response(serializer.data)
     
 class BookingView(APIView):
-    permission_classes = [permissions.IsAdminUser]
+    
     def get(self, request):
         model = Booking.objects.all()
         serializer = BookingSerializer(model, many=True)
@@ -63,15 +63,16 @@ class BookingDetail(generics.RetrieveAPIView):
     lookup_field = "traveler_name"
     queryset = Booking.objects.all()
     serializer_class = BookingSerializer
-    permission_classes = [permissions.IsAdminUser]
+    
+    
 
 class PackageViewSet(viewsets.ModelViewSet):
-    permission_classes = [permissions.IsAdminUser]
+    
     queryset = Package.objects.all()
     serializer_class = PackageSerializer
 
 class DestinationViewSet(viewsets.ModelViewSet):
-    permission_classes = [permissions.IsAdminUser]
+    
     queryset = Destination.objects.all()
     serializer_class = DestinationSerializer
 
